@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Nidhi Anand — QA & Test Automation Leader</title>
+<meta name="description" content="Nidhi Anand — Quality Engineering leader with 15+ years in test automation across web, mobile and API. Selenium, Playwright, Appium, CI/CD, and GenAI-driven testing. Open to roles in India and the UAE." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --ink:#0A0B0E;
+  --ink-2:#0E1014;
+  --panel:rgba(18,22,28,.62);
+  --panel-solid:#12161C;
+  --line:#222934;
+  --line-soft:rgba(120,140,160,.12);
+  --pass:#3FE08A;
+  --pass-dim:#1C7A4E;
+  --fail:#FF5C6C;
+  --run:#FFB454;
+  --info:#5BC8FF;
+  --text:#E9EEF2;
+  --muted:#8A96A4;
+  --muted-2:#586474;
+  --display:'Space Grotesk',sans-serif;
+  --body:'Inter',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+  --maxw:1180px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font-family:var(--body);line-height:1.6;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ambient */
+.bg{position:fixed;inset:0;z-index:-2;pointer-events:none}
+.bg-grid{position:absolute;inset:-2px;
+  background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+  background-size:52px 52px;
+  -webkit-mask-image:radial-gradient(ellipse 95% 65% at 50% 0%,#000 35%,transparent 82%);
+          mask-image:radial-gradient(ellipse 95% 65% at 50% 0%,#000 35%,transparent 82%);
+  animation:drift 30s linear infinite}
+@keyframes drift{to{background-position:52px 52px,52px 52px}}
+.bg-glow{position:absolute;border-radius:50%;filter:blur(120px);opacity:.45}
+.bg-glow.a{top:-180px;left:6%;width:540px;height:540px;background:radial-gradient(circle,rgba(63,224,138,.16),transparent 70%)}
+.bg-glow.b{top:42%;right:-140px;width:460px;height:460px;background:radial-gradient(circle,rgba(91,200,255,.08),transparent 70%)}
+.bg-scan{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.45;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.12) 3px 4px)}
+.bg-vig{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 120% 100% at 50% -8%,transparent 52%,rgba(4,5,7,.85))}
+
+/* boot */
+#boot{position:fixed;inset:0;z-index:200;background:var(--ink);display:flex;align-items:center;
+  justify-content:center;flex-direction:column;font-family:var(--mono);transition:opacity .6s ease}
+#boot.done{opacity:0;pointer-events:none}
+.boot-inner{width:min(540px,86vw)}
+.boot-bar{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.18em;
+  color:var(--muted);text-transform:uppercase;margin-bottom:18px}
+.boot-bar b{color:var(--pass);font-weight:500}
+.boot-log{font-size:12.5px;color:var(--muted);min-height:150px}
+.boot-log .ln{opacity:0;white-space:pre-wrap}
+.boot-log .ln.in{opacity:1}
+.boot-log .ok{color:var(--pass)}.boot-log .acc{color:var(--info)}
+.boot-prog{margin-top:18px;height:3px;background:var(--line);border-radius:2px;overflow:hidden}
+.boot-prog span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pass-dim),var(--pass));
+  box-shadow:0 0 12px var(--pass);transition:width .25s linear}
+
+/* status bar */
+.statusbar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,11,14,.72);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--line);font-family:var(--mono)}
+.statusbar-in{max-width:var(--maxw);margin:0 auto;height:54px;padding:0 22px;display:flex;align-items:center;gap:22px}
+.callsign{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;
+  letter-spacing:.02em;font-size:15px;color:var(--text);text-decoration:none}
+.callsign .mark{width:30px;height:30px;border:1px solid var(--pass);border-radius:5px;display:grid;
+  place-items:center;font-size:12px;color:var(--pass);box-shadow:inset 0 0 12px rgba(63,224,138,.25)}
+.nav{display:flex;gap:4px;margin-left:6px}
+.nav a{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);text-decoration:none;
+  padding:7px 11px;border-radius:6px;transition:.18s}
+.nav a:hover{color:var(--pass);background:rgba(63,224,138,.07)}
+.status-right{margin-left:auto;display:flex;align-items:center;gap:18px;font-size:11px;letter-spacing:.12em;
+  color:var(--muted);text-transform:uppercase}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--pass);box-shadow:0 0 9px var(--pass);
+  display:inline-block;margin-right:7px;animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.35}}
+.burger{display:none;margin-left:auto;background:none;border:1px solid var(--line);color:var(--pass);
+  width:38px;height:34px;border-radius:6px;cursor:pointer;font-size:16px}
+
+/* layout */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px}
+section{padding:96px 0;position:relative}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--pass);
+  display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--pass);box-shadow:0 0 8px var(--pass)}
+.eyebrow .idx{color:var(--muted-2)}
+h2.head{font-family:var(--display);font-weight:600;font-size:clamp(28px,4.4vw,46px);line-height:1.05;
+  letter-spacing:-.015em;margin-bottom:14px}
+.lead{color:var(--muted);max-width:64ch;font-size:16px}
+
+/* HUD panel */
+.panel{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:12px;backdrop-filter:blur(8px)}
+.panel::before,.panel::after,.panel>.cb1,.panel>.cb2{content:"";position:absolute;width:13px;height:13px;
+  border:1.5px solid var(--pass);opacity:.5;transition:.22s}
+.panel::before{top:8px;left:8px;border-right:0;border-bottom:0}
+.panel::after{top:8px;right:8px;border-left:0;border-bottom:0}
+.panel>.cb1{bottom:8px;left:8px;border-right:0;border-top:0}
+.panel>.cb2{bottom:8px;right:8px;border-left:0;border-top:0}
+.panel:hover::before,.panel:hover::after,.panel:hover>.cb1,.panel:hover>.cb2{opacity:1;box-shadow:0 0 9px rgba(63,224,138,.5)}
+
+/* hero */
+.hero{padding-top:128px;padding-bottom:54px}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:start}
+.hero-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
+.tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+  border:1px solid var(--line);border-radius:20px;padding:5px 12px}
+.tag b{color:var(--pass);font-weight:500}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(38px,6.4vw,74px);line-height:.98;
+  letter-spacing:-.02em;margin-bottom:20px}
+h1 .sub{display:block;font-size:.32em;font-weight:500;letter-spacing:.01em;color:var(--pass);
+  margin-top:14px;font-family:var(--mono)}
+.hero p.intro{color:var(--muted);font-size:16.5px;max-width:56ch;margin-bottom:28px}
+.hero p.intro b{color:var(--text);font-weight:600}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap}
+.btn{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;
+  padding:13px 20px;border-radius:8px;transition:.2s;display:inline-flex;align-items:center;gap:9px;
+  border:1px solid var(--line);color:var(--text)}
+.btn.primary{background:var(--pass);color:#06291a;border-color:var(--pass);font-weight:700;box-shadow:0 0 22px rgba(63,224,138,.28)}
+.btn.primary:hover{box-shadow:0 0 34px rgba(63,224,138,.5);transform:translateY(-2px)}
+.btn.ghost:hover{border-color:var(--pass);color:var(--pass);background:rgba(63,224,138,.06)}
+
+/* hero console */
+.console{padding:18px}
+.console-top{display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);
+  font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);
+  border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:16px}
+.console-top .live{color:var(--pass)}
+/* pipeline */
+.pipe{display:flex;align-items:center;gap:0;margin-bottom:16px;font-family:var(--mono);font-size:9px;
+  letter-spacing:.05em;text-transform:uppercase}
+.pipe .stg{flex:1;text-align:center;color:var(--muted-2);position:relative;padding:7px 2px;
+  border:1px solid var(--line);border-right:0;background:rgba(8,9,12,.5);transition:.3s}
+.pipe .stg:first-child{border-radius:6px 0 0 6px}
+.pipe .stg:last-child{border-right:1px solid var(--line);border-radius:0 6px 6px 0}
+.pipe .stg.done{color:var(--pass);border-color:var(--pass-dim);background:rgba(63,224,138,.08)}
+.pipe .stg.active{color:var(--run);border-color:var(--run);background:rgba(255,180,84,.1);
+  box-shadow:0 0 12px rgba(255,180,84,.25)}
+/* ring + counters */
+.console-mid{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;margin-bottom:14px}
+.ring-wrap{width:96px;height:96px;position:relative}
+.ring-wrap svg{transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--line);stroke-width:7}
+.ring-fg{fill:none;stroke:var(--pass);stroke-width:7;stroke-linecap:round;
+  filter:drop-shadow(0 0 5px rgba(63,224,138,.6));transition:stroke-dashoffset 1s ease}
+.ring-lbl{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--display)}
+.ring-lbl b{font-size:22px;font-weight:700;color:var(--pass)}
+.ring-lbl small{font-size:8px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-top:1px}
+.res{display:grid;gap:8px}
+.res .row{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px}
+.res .row .k{color:var(--muted)}
+.res .bar{height:5px;border-radius:3px;background:var(--line);flex:1;margin:0 10px;overflow:hidden}
+.res .bar i{display:block;height:100%;border-radius:3px}
+.res .bar.p i{background:var(--pass)}.res .bar.f i{background:var(--fail)}.res .bar.s i{background:var(--run)}
+.res .v{font-weight:600;min-width:26px;text-align:right}
+.res .v.p{color:var(--pass)}.res .v.f{color:var(--fail)}.res .v.s{color:var(--run)}
+/* nodes */
+.nodes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.node{border:1px solid var(--line);border-radius:8px;padding:9px 10px;background:rgba(8,9,12,.5);font-family:var(--mono)}
+.node .t{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.node .s{font-size:10px;color:var(--pass);margin-top:4px;display:flex;align-items:center;gap:5px}
+.node .s::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--pass);box-shadow:0 0 6px var(--pass)}
+/* log */
+.log{border:1px solid var(--line);border-radius:8px;background:rgba(6,7,10,.7);font-family:var(--mono);
+  font-size:10.5px;padding:11px 12px;height:96px;overflow:hidden}
+.log .ll{opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.log .ll .ok{color:var(--pass)}.log .ll .rn{color:var(--run)}.log .ll .fl{color:var(--fail)}
+.log .ll .tm{color:var(--muted-2)}
+
+/* stat ribbon */
+.ribbon{border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,rgba(18,22,28,.4),transparent);margin-top:38px}
+.ribbon-in{max-width:var(--maxw);margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
+.ribbon .cell{background:var(--ink);padding:26px 22px}
+.ribbon .num{font-family:var(--display);font-weight:700;font-size:clamp(28px,4.2vw,44px);color:var(--text)}
+.ribbon .num span{color:var(--pass)}
+.ribbon .cap{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+
+/* meta grid */
+.meta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:38px}
+.meta{padding:18px}
+.meta .k{font-family:var(--mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.meta .v{font-family:var(--display);font-weight:600;font-size:17px;margin-top:7px}
+.meta .v small{display:block;font-family:var(--body);font-weight:400;font-size:13px;color:var(--muted);margin-top:3px}
+
+/* capabilities */
+.cap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:42px}
+.capcard{padding:24px 22px;transition:.22s}
+.capcard:hover{transform:translateY(-3px);border-color:var(--pass-dim)}
+.capcard .no{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--pass);margin-bottom:14px}
+.capcard h3{font-family:var(--display);font-weight:600;font-size:18px;margin-bottom:9px}
+.capcard p{font-size:14px;color:var(--muted)}
+
+/* stack */
+.stack-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:42px}
+.stackcat{padding:22px}
+.stackcat h4{font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--pass);
+  margin-bottom:15px;display:flex;align-items:center;gap:9px}
+.stackcat h4::before{content:"//";color:var(--muted-2)}
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{font-family:var(--mono);font-size:12px;color:var(--text);border:1px solid var(--line);
+  background:rgba(8,9,12,.5);border-radius:6px;padding:6px 11px;transition:.18s}
+.chip:hover{border-color:var(--pass);color:var(--pass)}
+
+/* experience timeline */
+.timeline{margin-top:42px;border-left:1px solid var(--line);margin-left:8px}
+.tl{position:relative;padding:0 0 38px 34px}
+.tl::before{content:"";position:absolute;left:-5px;top:6px;width:9px;height:9px;border-radius:50%;
+  background:var(--ink);border:1.5px solid var(--pass);box-shadow:0 0 10px rgba(63,224,138,.5)}
+.tl:last-child{padding-bottom:0}
+.tl .yr{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--run);margin-bottom:6px}
+.tl h3{font-family:var(--display);font-weight:600;font-size:18px}
+.tl .org{font-size:13px;color:var(--pass);margin:3px 0 11px;font-family:var(--mono)}
+.tl ul{list-style:none;display:grid;gap:7px}
+.tl li{font-size:14px;color:var(--muted);max-width:70ch;padding-left:18px;position:relative}
+.tl li::before{content:"▹";position:absolute;left:0;color:var(--pass)}
+.tl li b{color:var(--text);font-weight:600}
+
+/* education */
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:42px}
+.edu{padding:24px}
+.edu .deg{font-family:var(--display);font-weight:600;font-size:20px}
+.edu .uni{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:8px}
+
+/* contact */
+.contact-card{padding:42px 38px;text-align:center}
+.contact-card h2{font-family:var(--display);font-weight:600;font-size:clamp(28px,4vw,42px);margin-bottom:14px}
+.contact-card p{color:var(--muted);max-width:54ch;margin:0 auto 26px}
+.contact-mail{font-family:var(--mono);font-size:clamp(15px,2.4vw,22px);color:var(--pass);text-decoration:none;
+  border-bottom:1px solid var(--pass-dim);padding-bottom:3px;transition:.2s}
+.contact-mail:hover{text-shadow:0 0 14px rgba(63,224,138,.5)}
+.contact-links{display:flex;gap:11px;flex-wrap:wrap;justify-content:center;margin-top:30px}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:30px 0;font-family:var(--mono);font-size:11px;
+  letter-spacing:.07em;color:var(--muted)}
+.foot-in{max-width:var(--maxw);margin:0 auto;padding:0 22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.foot-in .acc{color:var(--pass)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.reveal.seen{opacity:1;transform:none}
+
+@media(max-width:880px){
+  .nav{display:none}.burger{display:block}.statusbar-in{gap:12px}.status-right{display:none}
+  .hero-grid{grid-template-columns:1fr;gap:26px}
+  .ribbon-in{grid-template-columns:1fr 1fr}
+  .meta-grid,.cap-grid,.stack-grid,.edu-grid{grid-template-columns:1fr}
+  .nav.open{display:flex;position:absolute;top:54px;left:0;right:0;flex-direction:column;
+    background:rgba(10,11,14,.97);border-bottom:1px solid var(--line);padding:10px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+::selection{background:rgba(63,224,138,.28)}
+:focus-visible{outline:2px solid var(--pass);outline-offset:3px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<div class="bg" aria-hidden="true">
+  <div class="bg-grid"></div><div class="bg-glow a"></div><div class="bg-glow b"></div>
+</div>
+<div class="bg-scan" aria-hidden="true"></div>
+<div class="bg-vig" aria-hidden="true"></div>
+
+<!-- boot -->
+<div id="boot" aria-hidden="true">
+  <div class="boot-inner">
+    <div class="boot-bar"><span>QA AUTOMATION CONSOLE</span><b>build 25.2</b></div>
+    <div class="boot-log" id="bootlog"></div>
+    <div class="boot-prog"><span id="bootprog"></span></div>
+  </div>
+</div>
+
+<header class="statusbar">
+  <div class="statusbar-in">
+    <a href="#top" class="callsign"><span class="mark">NA</span>NIDHI ANAND</a>
+    <nav class="nav" id="nav">
+      <a href="#profile">Profile</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#stack">Toolchain</a>
+      <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="status-right">
+      <span><span class="dot"></span>AVAILABLE</span>
+      <span>STATUS <span style="color:var(--pass)">IMMEDIATE</span></span>
+    </div>
+    <button class="burger" id="burger" aria-label="Toggle menu">≡</button>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero wrap">
+  <div class="hero-grid">
+    <div>
+      <div class="hero-tags">
+        <span class="tag"><b>QA</b> Engineering Leader</span>
+        <span class="tag">Test Automation</span>
+        <span class="tag">CI/CD &amp; DevOps</span>
+        <span class="tag">GenAI in QA</span>
+      </div>
+      <h1>Nidhi<br>Anand<span class="sub">// Quality Engineering &amp; Test Automation · 15+ yrs</span></h1>
+      <p class="intro">Quality Engineering leader who has built and led automation teams across <b>web, mobile and API</b> — owning framework design, CI/CD integration, and quality strategy from <b>Selenium and Playwright to GenAI-driven testing</b>. Immediate joiner, open to roles in India and the UAE.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="mailto:nidhi0011.anand@gmail.com">▸ Get in touch</a>
+        <a class="btn ghost" href="tel:+919953054407">◴ +91 99530 54407</a>
+        <a class="btn ghost" href="#experience">◳ View experience</a>
+      </div>
+    </div>
+
+    <!-- live QA console -->
+    <div class="panel console reveal"><span class="cb1"></span><span class="cb2"></span>
+      <div class="console-top"><span>CI · NIGHTLY REGRESSION</span><span class="live">● RUNNING</span></div>
+      <div class="pipe" id="pipe">
+        <div class="stg" data-i="0">Build</div>
+        <div class="stg" data-i="1">Unit</div>
+        <div class="stg" data-i="2">API</div>
+        <div class="stg" data-i="3">UI</div>
+        <div class="stg" data-i="4">Regress</div>
+        <div class="stg" data-i="5">Deploy</div>
+      </div>
+      <div class="console-mid">
+        <div class="ring-wrap">
+          <svg viewBox="0 0 96 96" width="96" height="96">
+            <circle class="ring-bg" cx="48" cy="48" r="42"></circle>
+            <circle class="ring-fg" id="ring" cx="48" cy="48" r="42" stroke-dasharray="263.9" stroke-dashoffset="263.9"></circle>
+          </svg>
+          <div class="ring-lbl"><b id="ring-pct">0%</b><small>Pass rate</small></div>
+        </div>
+        <div class="res">
+          <div class="row"><span class="k">Passed</span><span class="bar p"><i id="b-p" style="width:0"></i></span><span class="v p" id="v-p">0</span></div>
+          <div class="row"><span class="k">Failed</span><span class="bar f"><i id="b-f" style="width:0"></i></span><span class="v f" id="v-f">0</span></div>
+          <div class="row"><span class="k">Skipped</span><span class="bar s"><i id="b-s" style="width:0"></i></span><span class="v s" id="v-s">0</span></div>
+        </div>
+      </div>
+      <div class="nodes">
+        <div class="node"><div class="t">Chrome</div><div class="s">node up</div></div>
+        <div class="node"><div class="t">Firefox</div><div class="s">node up</div></div>
+        <div class="node"><div class="t">WebKit</div><div class="s">node up</div></div>
+      </div>
+      <div class="log" id="log"></div>
+    </div>
+  </div>
+</section>
+
+<!-- STAT RIBBON -->
+<div class="ribbon">
+  <div class="ribbon-in">
+    <div class="cell"><div class="num" data-count="15" data-suffix="+"><span>0</span>+</div><div class="cap">Years in QA &amp; automation</div></div>
+    <div class="cell"><div class="num" data-count="14" data-suffix="">0</div><div class="cap">Engineers led · peak team</div></div>
+    <div class="cell"><div class="num" data-count="40" data-suffix="%"><span>0</span>%</div><div class="cap">Manual effort cut · ODFL</div></div>
+    <div class="cell"><div class="num" data-count="3" data-suffix="">0</div><div class="cap">Platforms · web · mobile · API</div></div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<section id="profile" class="wrap">
+  <div class="eyebrow"><span class="idx">MODULE 01</span> Profile</div>
+  <h2 class="head reveal">Quality, owned end to end.</h2>
+  <p class="lead reveal">A Quality Engineering leader who has led teams of up to 14 across automation and manual testing for web, mobile and API platforms. The work spans the full quality lifecycle — defining automation strategy and coverage goals, designing reusable frameworks, integrating tests into CI/CD pipelines, and reporting quality metrics to leadership. Equally hands-on: building frameworks in Playwright/TypeScript and Selenium/Java, and adopting GenAI tooling like GitHub Copilot and Playwright MCP for self-healing automation and auto-generated regression suites.</p>
+  <div class="meta-grid">
+    <div class="panel meta reveal"><span class="cb1"></span><span class="cb2"></span><div class="k">Experience</div><div class="v">15+ years<small>QA &amp; test automation</small></div></div>
+    <div class="panel meta reveal"><span class="cb1"></span><span class="cb2"></span><div class="k">Leadership</div><div class="v">Teams to 14<small>Hiring, mentoring, delivery</small></div></div>
+    <div class="panel meta reveal"><span class="cb1"></span><span class="cb2"></span><div class="k">Availability</div><div class="v">Immediate<small>India &amp; UAE</small></div></div>
+    <div class="panel meta reveal"><span class="cb1"></span><span class="cb2"></span><div class="k">Coverage</div><div class="v">Web · Mobile · API<small>Cross-browser &amp; device</small></div></div>
+    <div class="panel meta reveal"><span class="cb1"></span><span class="cb2"></span><div class="k">Methodology</div><div class="v">Agile · Scrum<small>Sprints, stand-ups, retros</small></div></div>
+    <div class="panel meta reveal"><span class="cb1"></span><span class="cb2"></span><div class="k">Education</div><div class="v">MCA · BCA<small>Sikkim Manipal · Panjab Univ.</small></div></div>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section id="capabilities" class="wrap">
+  <div class="eyebrow"><span class="idx">MODULE 02</span> Capabilities</div>
+  <h2 class="head reveal">What I bring to the team.</h2>
+  <div class="cap-grid">
+    <div class="panel capcard reveal"><span class="cb1"></span><span class="cb2"></span><div class="no">/ 01</div><h3>Test Automation</h3><p>Framework design and delivery across Selenium, Playwright and Appium — web, mobile and API — using Java, C# and TypeScript with Cucumber/BDD, TestNG and Page Object Model.</p></div>
+    <div class="panel capcard reveal"><span class="cb1"></span><span class="cb2"></span><div class="no">/ 02</div><h3>GenAI in QA</h3><p>GitHub Copilot, LLM-based solutions and Playwright MCP for intelligent framework creation, auto-generated regression suites, framework maintenance and self-healing automation.</p></div>
+    <div class="panel capcard reveal"><span class="cb1"></span><span class="cb2"></span><div class="no">/ 03</div><h3>CI/CD &amp; DevOps</h3><p>Shift-left testing wired into CI/CD with Jenkins and Azure DevOps, nightly regression execution, and Docker Compose to manage Selenium browser nodes and hub.</p></div>
+    <div class="panel capcard reveal"><span class="cb1"></span><span class="cb2"></span><div class="no">/ 04</div><h3>Leadership &amp; Strategy</h3><p>End-to-end people leadership — hiring, onboarding, performance reviews, mentoring and career development — plus quality engineering strategy, automation roadmaps and coverage goals.</p></div>
+    <div class="panel capcard reveal"><span class="cb1"></span><span class="cb2"></span><div class="no">/ 05</div><h3>Quality Governance</h3><p>QA governance, automation standards, reusable frameworks and best practices across projects and teams, with metrics on coverage, defect leakage, execution trends and release health.</p></div>
+    <div class="panel capcard reveal"><span class="cb1"></span><span class="cb2"></span><div class="no">/ 06</div><h3>Cross-functional Delivery</h3><p>Coordination across QA, development, product owners and DevOps to keep releases timely and high-quality, with sprint planning, stand-ups, retrospectives and release-readiness reviews.</p></div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack" class="wrap">
+  <div class="eyebrow"><span class="idx">MODULE 03</span> Toolchain</div>
+  <h2 class="head reveal">The stack I run.</h2>
+  <div class="stack-grid">
+    <div class="panel stackcat reveal"><span class="cb1"></span><span class="cb2"></span><h4>Automation Tools</h4><div class="chips"><span class="chip">Selenium</span><span class="chip">Playwright</span><span class="chip">Appium</span></div></div>
+    <div class="panel stackcat reveal"><span class="cb1"></span><span class="cb2"></span><h4>Languages</h4><div class="chips"><span class="chip">Java</span><span class="chip">C#</span><span class="chip">TypeScript</span></div></div>
+    <div class="panel stackcat reveal"><span class="cb1"></span><span class="cb2"></span><h4>Frameworks</h4><div class="chips"><span class="chip">Cucumber / BDD</span><span class="chip">TestNG</span><span class="chip">Page Object Model</span></div></div>
+    <div class="panel stackcat reveal"><span class="cb1"></span><span class="cb2"></span><h4>AI &amp; GenAI</h4><div class="chips"><span class="chip">GitHub Copilot</span><span class="chip">Playwright MCP</span><span class="chip">LLM test generation</span><span class="chip">Chatbot / GPT testing</span></div></div>
+    <div class="panel stackcat reveal"><span class="cb1"></span><span class="cb2"></span><h4>CI/CD &amp; DevOps</h4><div class="chips"><span class="chip">Azure DevOps</span><span class="chip">Jenkins</span><span class="chip">GitHub</span><span class="chip">Bitbucket</span><span class="chip">Maven</span><span class="chip">Docker</span></div></div>
+    <div class="panel stackcat reveal"><span class="cb1"></span><span class="cb2"></span><h4>Testing Tools &amp; Platforms</h4><div class="chips"><span class="chip">JIRA</span><span class="chip">HP QC</span><span class="chip">Postman</span><span class="chip">SOAP UI</span><span class="chip">BrowserStack</span><span class="chip">Sauce Labs</span><span class="chip">Android</span><span class="chip">iOS</span></div></div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="wrap">
+  <div class="eyebrow"><span class="idx">MODULE 04</span> Experience</div>
+  <h2 class="head reveal">Sixteen years of shipping quality.</h2>
+  <div class="timeline">
+    <div class="tl reveal">
+      <div class="yr">JUN 2024 — DEC 2025</div>
+      <h3>Software Engineering Manager</h3>
+      <div class="org">BCG</div>
+      <ul>
+        <li>Led and managed a <b>14-member Quality Engineering team</b> across manual, automation, API and chatbot testing — driving delivery excellence, automation adoption, sprint execution and stakeholder communication.</li>
+        <li>Created automation frameworks in <b>Playwright/TypeScript</b> and Selenium/Java that the team standardised on for test automation.</li>
+        <li>Adopted <b>GenAI</b> in automation and functional testing, enabling auto-generation of regression and functional test cases.</li>
+        <li>Implemented CI/CD pipelines with Jenkins for nightly regression, and directed QA for GPT-based chatbot testing.</li>
+        <li>Built a Jira–Qmetry integrated utility that pulls execution status from both tools and reports weekly to stakeholders.</li>
+      </ul>
+    </div>
+    <div class="tl reveal">
+      <div class="yr">MAR 2022 — JUN 2024</div>
+      <h3>QA Lead</h3>
+      <div class="org">Centric Consulting · Gurgaon</div>
+      <ul>
+        <li>Managed a QA team of 10 across web and mobile testing projects (PepsiCo, BSwift).</li>
+        <li>Designed and executed automation suites using <b>Appium/Java/Cucumber</b> for Android &amp; iOS and Selenium/Java/Cucumber for web.</li>
+        <li>Integrated tests with BrowserStack and Sauce Labs for device and browser compatibility.</li>
+        <li>Built and maintained a Selenium framework in Java, automating critical web workflows.</li>
+      </ul>
+    </div>
+    <div class="tl reveal">
+      <div class="yr">SEP 2020 — FEB 2022</div>
+      <h3>Senior Associate QA</h3>
+      <div class="org">Publicis Sapient · Gurgaon</div>
+      <ul>
+        <li>Automated the regression suite using Selenium WebDriver, TestNG, Maven and Jenkins.</li>
+        <li>Built automation pipelines for the ODFL project, <b>reducing manual testing by 40%</b>.</li>
+        <li>Delivered iterative testing under Agile/Scrum.</li>
+      </ul>
+    </div>
+    <div class="tl reveal">
+      <div class="yr">NOV 2016 — MAR 2020</div>
+      <h3>Senior Test Analyst</h3>
+      <div class="org">Schneider Electric · Gurgaon</div>
+      <ul>
+        <li>Automated workflows in Selenium/TestNG for the SKM and PIM applications.</li>
+        <li>Designed test strategies, authored test cases, and executed regression, GUI and functional testing.</li>
+        <li>Delivered regular QA status reports and collaborated in Agile ceremonies.</li>
+      </ul>
+    </div>
+    <div class="tl reveal">
+      <div class="yr">JUN 2008 — OCT 2014</div>
+      <h3>Software Engineer</h3>
+      <div class="org">Tech Mahindra · Chandigarh</div>
+      <ul>
+        <li>Developed and executed test cases for AT&amp;T mobility and retail apps (System X, PDC, OPUS).</li>
+        <li>Performed regression and functional testing, coordinated UAT, and managed defects.</li>
+        <li>Supported knowledge transfer and training for new team members.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" class="wrap">
+  <div class="eyebrow"><span class="idx">MODULE 05</span> Education</div>
+  <h2 class="head reveal">Foundations.</h2>
+  <div class="edu-grid">
+    <div class="panel edu reveal"><span class="cb1"></span><span class="cb2"></span><div class="deg">MCA</div><div class="uni">Master of Computer Applications<br>Sikkim Manipal University, India</div></div>
+    <div class="panel edu reveal"><span class="cb1"></span><span class="cb2"></span><div class="deg">BCA</div><div class="uni">Bachelor of Computer Applications<br>Panjab University, India</div></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="wrap">
+  <div class="panel contact-card reveal"><span class="cb1"></span><span class="cb2"></span>
+    <div class="eyebrow" style="justify-content:center"><span class="idx">MODULE 06</span> Contact</div>
+    <h2>Let's build quality together.</h2>
+    <p>Immediate joiner, open to Quality Engineering and Test Automation leadership roles across India and the UAE.</p>
+    <a class="contact-mail" href="mailto:nidhi0011.anand@gmail.com">nidhi0011.anand@gmail.com</a>
+    <div class="contact-links">
+      <a class="btn primary" href="mailto:nidhi0011.anand@gmail.com">▸ Email</a>
+      <a class="btn ghost" href="tel:+919953054407">◴ +91 99530 54407</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-in">
+    <span>© 2026 Nidhi Anand · <span class="acc">QA &amp; Test Automation</span></span>
+    <span>nidhi0011.anand@gmail.com · +91 99530 54407</span>
+    <span class="acc">ALL SUITES GREEN</span>
+  </div>
+</footer>
+
+<script>
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* burger */
+document.getElementById('burger').addEventListener('click',()=>document.getElementById('nav').classList.toggle('open'));
+document.querySelectorAll('#nav a').forEach(a=>a.addEventListener('click',()=>document.getElementById('nav').classList.remove('open')));
+
+/* boot */
+const bootLines=[
+  ['> init qa.console','acc'],
+  ['  starting selenium grid ...... <span class="ok">OK</span>',''],
+  ['  browser nodes [chrome|firefox|webkit] <span class="ok">UP</span>',''],
+  ['  linking playwright mcp ...... <span class="ok">OK</span>',''],
+  ['  jenkins · azure devops ...... <span class="ok">OK</span>',''],
+  ['> test grid <span class="acc">READY</span>','']
+];
+const bootlog=document.getElementById('bootlog'),bootprog=document.getElementById('bootprog'),bootEl=document.getElementById('boot');
+function revealAll(){document.querySelectorAll('.reveal').forEach(el=>io.observe(el));}
+function finishBoot(){bootEl.classList.add('done');revealAll();startConsole();}
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('seen');io.unobserve(e.target);}});},{threshold:.14});
+
+if(reduced){bootEl.style.display='none';document.querySelectorAll('.reveal').forEach(el=>el.classList.add('seen'));startConsole();}
+else{
+  let i=0;(function next(){
+    if(i>=bootLines.length){bootprog.style.width='100%';setTimeout(finishBoot,420);return;}
+    const d=document.createElement('div');d.className='ln';d.innerHTML=bootLines[i][0];bootlog.appendChild(d);
+    requestAnimationFrame(()=>d.classList.add('in'));
+    bootprog.style.width=Math.round(((i+1)/bootLines.length)*100)+'%';i++;setTimeout(next,300);
+  })();
+  setTimeout(()=>{if(!bootEl.classList.contains('done'))finishBoot();},3300);
+}
+
+/* count-up */
+function runCount(el){
+  const target=+el.dataset.count,suffix=el.dataset.suffix||'',hasSpan=el.querySelector('span');
+  let cur=0;const step=Math.max(1,target/40);
+  const t=setInterval(()=>{cur+=step;if(cur>=target){cur=target;clearInterval(t);}
+    const v=Math.round(cur);el.innerHTML=hasSpan?('<span>'+v+'</span>'+suffix):(v+suffix);},26);
+}
+const ioCount=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){runCount(e.target);ioCount.unobserve(e.target);}});},{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>{
+  if(reduced){el.innerHTML=(el.querySelector('span')?'<span>'+el.dataset.count+'</span>':el.dataset.count)+(el.dataset.suffix||'');}
+  else ioCount.observe(el);
+});
+
+/* live console */
+function startConsole(){
+  const ring=document.getElementById('ring'),pct=document.getElementById('ring-pct');
+  const C=263.9;
+  const stages=document.querySelectorAll('#pipe .stg');
+  const logEl=document.getElementById('log');
+  const suites=['login.spec','checkout.api','cart.ui','search.spec','payment.api','profile.ui','regression.core','mobile.android','mobile.ios','a11y.audit'];
+  const total=482;
+  function setRing(p){const off=C-(p/100)*C;if(ring)ring.style.strokeDashoffset=off;if(pct)pct.textContent=p.toFixed(1)+'%';}
+  function setBars(p,f,s){
+    document.getElementById('v-p').textContent=p;document.getElementById('v-f').textContent=f;document.getElementById('v-s').textContent=s;
+    const mx=(p+f+s)||1;
+    document.getElementById('b-p').style.width=(p/mx*100)+'%';
+    document.getElementById('b-f').style.width=(f/mx*100)+'%';
+    document.getElementById('b-s').style.width=(s/mx*100)+'%';
+  }
+  function pushLog(line){
+    const d=document.createElement('div');d.className='ll';d.innerHTML=line;
+    logEl.appendChild(d);while(logEl.children.length>6)logEl.removeChild(logEl.firstChild);
+  }
+  if(reduced){
+    stages.forEach(s=>s.classList.add('done'));setRing(98.3);setBars(474,4,4);
+    pushLog('<span class="tm">[grid]</span> nightly regression complete <span class="ok">PASS</span>');return;
+  }
+  let cycle=0;
+  function run(){
+    cycle++;
+    stages.forEach(s=>{s.classList.remove('done');s.classList.remove('active');});
+    let p=0,f=0,s=0;setRing(0);setBars(0,0,0);
+    logEl.innerHTML='';
+    let stg=0;
+    const stageTimer=setInterval(()=>{
+      if(stg>0)stages[stg-1].classList.replace('active','done');
+      if(stg<stages.length){stages[stg].classList.add('active');stg++;}
+      else{clearInterval(stageTimer);stages[stages.length-1].classList.add('done');}
+    },420);
+    let n=0;
+    const runTimer=setInterval(()=>{
+      n++;
+      const batch=Math.floor(total/26);
+      for(let k=0;k<batch;k++){const r=Math.random();if(r<0.965)p++;else if(r<0.985)s++;else f++;}
+      const done=p+f+s,rate=done?(p/done*100):0;
+      setRing(Math.min(rate,99.5));setBars(p,f,s);
+      const suite=suites[Math.floor(Math.random()*suites.length)];
+      const tm='[t+'+String(n).padStart(2,'0')+'s]';
+      const last=Math.random();
+      let tag=last<0.965?'<span class="ok">PASS</span>':(last<0.985?'<span class="rn">SKIP</span>':'<span class="fl">FAIL</span>');
+      pushLog('<span class="tm">'+tm+'</span> '+suite+' '.repeat(2)+tag);
+      if(done>=total){clearInterval(runTimer);
+        pushLog('<span class="tm">[grid]</span> run #'+cycle+' complete · <span class="ok">'+p+' passed</span>');
+        setTimeout(run,2600);
+      }
+    },260);
+  }
+  run();
+}
+</script>
+</body>
+</html>
